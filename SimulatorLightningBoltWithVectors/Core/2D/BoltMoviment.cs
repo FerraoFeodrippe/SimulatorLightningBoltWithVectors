@@ -14,7 +14,7 @@ namespace SimulatorLightningBoltWithVectors.Core._2D
     public class BoltMoviment : IDisposable
     {
         private readonly double _chanceRamification;
-        
+
         private readonly float _wLimit;
         private readonly float _hLimit;
         private Vector2 _boltPosition;
@@ -27,10 +27,24 @@ namespace SimulatorLightningBoltWithVectors.Core._2D
         private readonly int _removePointRate;
 
         public bool QueeFilled { get; private set; }
-        public bool HasFinished { get; private set; }
+        public bool _hasFinished { get; private set; }
 
-        public Queue<Vector2> Points;
-        public Dictionary<Vector2, List<Vector2>> RamificationPoints;
+        private Queue<Vector2> _points;
+        private Dictionary<Vector2, Queue<Vector2>> _ramificationPoints;
+
+        public Tuple<Queue<Vector2>, Dictionary<Vector2, Queue<Vector2>>> GetPoints
+        {
+            get
+            {
+                lock (__lock)
+                {
+                    return new Tuple<Queue<Vector2>, Dictionary<Vector2, Queue<Vector2>>>(
+                    //_points, _ramificationPoints);
+                    new Queue<Vector2>(_points),
+                        new Dictionary<Vector2, Queue<Vector2>>(_ramificationPoints));
+                }
+            }
+        }
 
         IStateCheck _state;
 
@@ -44,9 +58,9 @@ namespace SimulatorLightningBoltWithVectors.Core._2D
             IStateCheck state)
         {
             QueeFilled = false;
-            HasFinished = false;
+            _hasFinished = false;
 
-            _chanceRamification = 0.15;
+            _chanceRamification = 0.35;
             _actuaAng = 0;
             _maxAng = maxAng;
             _frameRate = frameRate;
@@ -54,8 +68,8 @@ namespace SimulatorLightningBoltWithVectors.Core._2D
             _wLimit = wLimit;
             _hLimit = hLimit;
             _sizeVector = Vector2.UnitX * sizeVector;
-            Points = new Queue<Vector2>();
-            RamificationPoints = new Dictionary<Vector2, List<Vector2>>();
+            _points = new Queue<Vector2>();
+            _ramificationPoints = new Dictionary<Vector2, Queue<Vector2>>();
 
             _state = state;
 
@@ -77,6 +91,7 @@ namespace SimulatorLightningBoltWithVectors.Core._2D
 
             _boltPosition = new Vector2((float)rand.NextDouble() * _wLimit, (float)rand.NextDouble() * _hLimit);
             _actuaAng = (float)rand.NextDouble() * 360;
+
             _boltVector = _boltPosition + _sizeVector;
 
             var points = ChangePosition();
@@ -87,12 +102,12 @@ namespace SimulatorLightningBoltWithVectors.Core._2D
 
                 lock (__lock)
                 {
-                    Points.Enqueue(point);
+                    _points.Enqueue(point);
 
                     if (rand.NextDouble() < _chanceRamification)
                     {
                         var rams = Ramification(point);
-                        RamificationPoints[point] = rams;
+                        _ramificationPoints[point] = rams;
                     }
                 }
 
@@ -104,7 +119,7 @@ namespace SimulatorLightningBoltWithVectors.Core._2D
 
         private async void Dequee()
         {
-            bool any = Points.Any();
+            bool any = _points.Any();
 
             while (any)
             {
@@ -112,35 +127,49 @@ namespace SimulatorLightningBoltWithVectors.Core._2D
 
                 lock (__lock)
                 {
-                    var removed = Points.Dequeue();
+                    var removed = _points.Dequeue();
 
-                    if (RamificationPoints.ContainsKey(removed))
+                    if (_ramificationPoints.ContainsKey(removed))
                     {
-                        RamificationPoints[removed].Clear();
-                        RamificationPoints.Remove(removed);
+                        _ramificationPoints[removed].Clear();
+                        _ramificationPoints.Remove(removed);
                     }
 
-                    any = Points.Any();
+                    any = _points.Any();
                 }
 
                 await Task.Delay(_removePointRate);
             }
-
-            HasFinished = true;
+            lock (__lock)
+            {
+                _hasFinished = true;
+            }
         }
 
-        private List<Vector2> Ramification(Vector2 point)
+        public bool HasFinished()
+        {
+            lock (__lock)
+            {
+                return _hasFinished;
+            }
+        }
+
+        private Queue<Vector2> Ramification(Vector2 point)
         {
             Random rand = new Random();
-            List<Vector2> ret = new List<Vector2>();
+            Queue<Vector2> ret = new Queue<Vector2>();
 
             Vector2 rPoint = point;
-            
-            var ramificationRange = 5 + rand.Next(5);
-                
+
+            var fatorL = 10;
+            fatorL = Math.Max(2, (int) _sizeVector.X / fatorL);
+
+            var ramificationRange = fatorL + rand.Next(3+fatorL);
+            var direction = 2 * (rand.NextDouble() - 0.5);
+
             while (ramificationRange > 0)
             {
-                float localRange = (float)rand.NextDouble() * _maxAng - _maxAng / 2;
+                float localRange = (float) (rand.NextDouble() * (_maxAng + 22.5) * direction + (direction * 22.5));
                 var actuaAng = _actuaAng + localRange;
 
                 float newX = _sizeVector.X * (float)Math.Cos(actuaAng * Math.PI / 180);
@@ -151,7 +180,7 @@ namespace SimulatorLightningBoltWithVectors.Core._2D
 
                 ramificationRange--;
 
-                ret.Add(rPoint);
+                ret.Enqueue(rPoint);
             }
 
             return ret;
@@ -182,8 +211,11 @@ namespace SimulatorLightningBoltWithVectors.Core._2D
 
         public void Dispose()
         {
-            _tQuee.Dispose();
-            _tDequee.Dispose();
+            if (_tQuee != null)
+                _tQuee.Dispose();
+
+            if (_tDequee != null)
+                _tDequee.Dispose();
         }
     }
 }

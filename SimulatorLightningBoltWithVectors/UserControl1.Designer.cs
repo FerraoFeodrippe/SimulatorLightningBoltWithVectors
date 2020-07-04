@@ -38,11 +38,16 @@ namespace SimulatorLightningBoltWithVectors
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.restartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.configPropertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripComboBox1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.SizeVectorOptionsMenu = new System.Windows.Forms.ToolStripComboBox();
+            this.pixelWidthToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.PixelWidthOptionsMenu = new System.Windows.Forms.ToolStripComboBox();
             this.BoltContainer = new System.Windows.Forms.PictureBox();
-            this.restartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BoltContainer)).BeginInit();
             this.SuspendLayout();
@@ -72,28 +77,36 @@ namespace SimulatorLightningBoltWithVectors
             // startToolStripMenuItem
             // 
             this.startToolStripMenuItem.Name = "startToolStripMenuItem";
-            this.startToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.startToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
             this.startToolStripMenuItem.Text = "Start";
             this.startToolStripMenuItem.Click += new System.EventHandler(this.startToolStripMenuItem_Click);
             // 
             // stopToolStripMenuItem
             // 
             this.stopToolStripMenuItem.Name = "stopToolStripMenuItem";
-            this.stopToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.stopToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
             this.stopToolStripMenuItem.Text = "Stop";
             this.stopToolStripMenuItem.Click += new System.EventHandler(this.stopToolStripMenuItem_Click);
+            // 
+            // restartToolStripMenuItem
+            // 
+            this.restartToolStripMenuItem.Name = "restartToolStripMenuItem";
+            this.restartToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
+            this.restartToolStripMenuItem.Text = "Restart";
+            this.restartToolStripMenuItem.Click += new System.EventHandler(this.restartToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // optionsToolStripMenuItem
             // 
             this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.dToolStripMenuItem});
+            this.dToolStripMenuItem,
+            this.configPropertiesToolStripMenuItem});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.optionsToolStripMenuItem.Text = "Options";
@@ -102,8 +115,63 @@ namespace SimulatorLightningBoltWithVectors
             // 
             this.dToolStripMenuItem.Enabled = false;
             this.dToolStripMenuItem.Name = "dToolStripMenuItem";
-            this.dToolStripMenuItem.Size = new System.Drawing.Size(88, 22);
+            this.dToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.dToolStripMenuItem.Text = "2D";
+            // 
+            // configPropertiesToolStripMenuItem
+            // 
+            this.configPropertiesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripComboBox1,
+            this.pixelWidthToolStripMenuItem});
+            this.configPropertiesToolStripMenuItem.Name = "configPropertiesToolStripMenuItem";
+            this.configPropertiesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.configPropertiesToolStripMenuItem.Text = "Config Properties";
+            // 
+            // toolStripComboBox1
+            // 
+            this.toolStripComboBox1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.SizeVectorOptionsMenu});
+            this.toolStripComboBox1.Name = "toolStripComboBox1";
+            this.toolStripComboBox1.Size = new System.Drawing.Size(180, 22);
+            this.toolStripComboBox1.Text = "SizeVector";
+            // 
+            // SizeVectorOptionsMenu
+            // 
+            this.SizeVectorOptionsMenu.Items.AddRange(new object[] {
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15"});
+            this.SizeVectorOptionsMenu.Name = "SizeVectorOptionsMenu";
+            this.SizeVectorOptionsMenu.Size = new System.Drawing.Size(121, 23);
+            this.SizeVectorOptionsMenu.SelectedIndexChanged += new System.EventHandler(this.SizeVectorOptionsMenu_SelectedIndexChanged);
+            // 
+            // pixelWidthToolStripMenuItem
+            // 
+            this.pixelWidthToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.PixelWidthOptionsMenu});
+            this.pixelWidthToolStripMenuItem.Name = "pixelWidthToolStripMenuItem";
+            this.pixelWidthToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.pixelWidthToolStripMenuItem.Text = "PixelWidth";
+            // 
+            // PixelWidthOptionsMenu
+            // 
+            this.PixelWidthOptionsMenu.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"});
+            this.PixelWidthOptionsMenu.Name = "PixelWidthOptionsMenu";
+            this.PixelWidthOptionsMenu.Size = new System.Drawing.Size(121, 23);
+            this.PixelWidthOptionsMenu.SelectedIndexChanged += new System.EventHandler(this.PixelWidthOptionsMenu_SelectedIndexChanged);
             // 
             // BoltContainer
             // 
@@ -113,13 +181,6 @@ namespace SimulatorLightningBoltWithVectors
             this.BoltContainer.Size = new System.Drawing.Size(794, 420);
             this.BoltContainer.TabIndex = 1;
             this.BoltContainer.TabStop = false;
-            // 
-            // restartToolStripMenuItem
-            // 
-            this.restartToolStripMenuItem.Name = "restartToolStripMenuItem";
-            this.restartToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.restartToolStripMenuItem.Text = "Restart";
-            this.restartToolStripMenuItem.Click += new System.EventHandler(this.restartToolStripMenuItem_Click);
             // 
             // UserControl1
             // 
@@ -148,5 +209,10 @@ namespace SimulatorLightningBoltWithVectors
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem restartToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem configPropertiesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripComboBox1;
+        private System.Windows.Forms.ToolStripComboBox SizeVectorOptionsMenu;
+        private System.Windows.Forms.ToolStripMenuItem pixelWidthToolStripMenuItem;
+        private System.Windows.Forms.ToolStripComboBox PixelWidthOptionsMenu;
     }
 }

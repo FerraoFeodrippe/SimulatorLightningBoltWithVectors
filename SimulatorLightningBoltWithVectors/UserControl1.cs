@@ -17,8 +17,16 @@ namespace SimulatorLightningBoltWithVectors
 
         public UserControl1()
         {
+
             InitializeComponent();
-            core = new BoltCore(BoltContainer, 2 ,10, 45, 25, 2);
+
+            var size = float.Parse(SizeVectorOptionsMenu.Items[0].ToString());
+            var width = float.Parse(PixelWidthOptionsMenu.Items[0].ToString());
+
+            core = new BoltCore(BoltContainer, width, size, 45, 15, 2);
+
+            PixelWidthOptionsMenu.SelectedItem = PixelWidthOptionsMenu.Items[0];
+            SizeVectorOptionsMenu.SelectedItem = SizeVectorOptionsMenu.Items[0];
         }
 
         private void startToolStripMenuItem_Click(object sender, EventArgs e)
@@ -39,6 +47,22 @@ namespace SimulatorLightningBoltWithVectors
         private void restartToolStripMenuItem_Click(object sender, EventArgs e)
         {
             core.Restart();
+        }
+
+        private void SizeVectorOptionsMenu_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (SizeVectorOptionsMenu.SelectedItem != null)
+            {
+                core.SetBoltSizeVector(float.Parse(SizeVectorOptionsMenu.SelectedItem.ToString()));
+            }
+        }
+
+        private void PixelWidthOptionsMenu_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (PixelWidthOptionsMenu.SelectedItem != null)
+            {
+                core.SetBoltWidth(float.Parse(PixelWidthOptionsMenu.SelectedItem.ToString()));
+            }
         }
     }
 }

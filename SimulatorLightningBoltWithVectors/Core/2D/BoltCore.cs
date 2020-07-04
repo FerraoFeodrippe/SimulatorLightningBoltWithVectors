@@ -30,19 +30,23 @@ namespace SimulatorLightningBoltWithVectors.Core._2D
         public int FrameRate { get; set; }
         public int RemovePointRateFactor { get; set; }
 
+        public object __lock;
+
         public BoltCore( System.Windows.Forms.PictureBox boltContainer,
             float boltWidth, float sizeVector, float maxAng, int frameRate = 1, int removePointRateFactor = 5)
         {
             _bolts = new List<BoltMoviment>();
             _sizeVector = sizeVector;
             _boltContainer = boltContainer;
-            _config = new BoltConfig(Color.BlueViolet, boltWidth);
+            _config = new BoltConfig(Color.DeepSkyBlue, boltWidth);
             _bitmapDefault = new Bitmap(boltContainer.Image);
             _executing = false;
 
             MaxAng = maxAng;
             FrameRate = frameRate;
             RemovePointRateFactor = removePointRateFactor;
+
+            __lock = new object();
         }
 
         public async void Start()
@@ -59,11 +63,15 @@ namespace SimulatorLightningBoltWithVectors.Core._2D
                 await Task.Run(() => WaitPause());
                 await Task.Delay(FrameRate);
 
-                var finishedBolts = new List<BoltMoviment>(_bolts.Where(e => e.HasFinished));
-
-                foreach (var bolt in finishedBolts)
+                lock (__lock)
                 {
-                    _bolts.Remove(bolt);
+                    var finishedBolts = _bolts.Where(e => e.HasFinished()).ToList();
+
+                    foreach (var bolt in finishedBolts)
+                    {
+                        _bolts.Remove(bolt);
+                    }
+
                 }
 
                 if (_actualBolt.QueeFilled)
@@ -75,7 +83,6 @@ namespace SimulatorLightningBoltWithVectors.Core._2D
             }
         }
 
-
         public void Pause()
         {
             _paused = !_paused;
@@ -84,25 +91,33 @@ namespace SimulatorLightningBoltWithVectors.Core._2D
         public void Restart()
         {
             Pause();
-            _bolts.Clear();
-
             _executing = false;
+
+            foreach(var bolt in _bolts)
+            {
+                bolt.Dispose();
+            }
+
+            _bolts.Clear();
 
             Start();
         }
 
         private void NextBolt()
         {
-            _actualBolt = new BoltMoviment(_boltContainer.Width, _boltContainer.Height, _sizeVector
+            lock (__lock)
+            {
+                _actualBolt = new BoltMoviment(_boltContainer.Width, _boltContainer.Height, _sizeVector
                 , MaxAng, FrameRate, RemovePointRateFactor, this);
 
-            _actualBolt.Start();
-            _bolts.Add(_actualBolt);
+                _actualBolt.Start();
+                _bolts.Add(_actualBolt);
+            }
         }
 
         private void DrawPoints()
         {
-            try
+            lock (__lock)
             {
                 _bitmap = new Bitmap(_bitmapDefault);
                 Graphics g = Graphics.FromImage(_bitmap);
@@ -111,17 +126,43 @@ namespace SimulatorLightningBoltWithVectors.Core._2D
 
                 foreach (var bolt in _bolts)
                 {
-                    var points = bolt.Points;
+                    var tuple = bolt.GetPoints;
+
+                    var points = tuple.Item1;
 
                     if (points.Count > 1)
                     {
-                        var rams = bolt.RamificationPoints;
+                        var rams = tuple.Item2;
 
-                        g.DrawLines(brush, points.Select(p => new PointF(p.X, p.Y)).ToArray());
+                        var p1 = points.Dequeue();
 
-                        foreach(var ram in rams)
+                        while (points.Any())
                         {
-                            g.DrawLines(brush, ram.Value.Select(p => new PointF(p.X, p.Y)).ToArray());
+                            if (rams.ContainsKey(p1) && rams[p1].Any() && rams[p1].Count > 1)
+                            {
+                                var rPoints = new Queue<Vector2>(rams[p1]);
+
+                                var rP1 = p1;
+
+                                while (rPoints.Any())
+                                {
+                                    var rP2 = rPoints.Dequeue();
+
+                                    g.DrawLine(brush, rP1.X, rP1.Y, rP2.X, rP2.Y);
+
+                                    rP1 = rP2;
+                                }
+                            }
+
+                            var p2 = points.Dequeue();
+                            g.DrawLine(brush, p1.X, p1.Y, p2.X, p2.Y);
+
+                            p1 = p2;
+                        }
+
+                        foreach (var point in points)
+                        {
+                            g.DrawLines(brush, points.Select(p => new PointF(p.X, p.Y)).ToArray());
                         }
 
                     }
@@ -130,9 +171,21 @@ namespace SimulatorLightningBoltWithVectors.Core._2D
                 g.Save();
                 _boltContainer.Image = _bitmap;
             }
-            catch
-            {
+        }
 
+        public void SetBoltWidth(float width)
+        {
+            lock(__lock)
+            {
+                _config.PenConfig.Width = width;
+            }
+        }
+
+        public void SetBoltSizeVector(float sizeVector)
+        {
+            lock (__lock)
+            {
+                 _sizeVector = sizeVector;
             }
         }
 
