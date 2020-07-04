@@ -18,12 +18,7 @@ namespace SimulatorLightningBoltWithVectors
         public UserControl1()
         {
             InitializeComponent();
-            core = new BoltCore(BoltContainer, 10, 30);
-        }
-
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-
+            core = new BoltCore(BoltContainer, 2 ,10, 45, 25, 2);
         }
 
         private void startToolStripMenuItem_Click(object sender, EventArgs e)
@@ -33,7 +28,7 @@ namespace SimulatorLightningBoltWithVectors
 
         private void stopToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            core.Stop();
+           core.Pause();
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -41,9 +36,9 @@ namespace SimulatorLightningBoltWithVectors
             Application.Exit();
         }
 
-        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        private void restartToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            core.Restart();
         }
     }
 }

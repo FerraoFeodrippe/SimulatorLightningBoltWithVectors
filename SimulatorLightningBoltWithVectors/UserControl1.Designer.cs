@@ -42,6 +42,7 @@ namespace SimulatorLightningBoltWithVectors
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.BoltContainer = new System.Windows.Forms.PictureBox();
+            this.restartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BoltContainer)).BeginInit();
             this.SuspendLayout();
@@ -62,11 +63,11 @@ namespace SimulatorLightningBoltWithVectors
             this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.startToolStripMenuItem,
             this.stopToolStripMenuItem,
+            this.restartToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(59, 20);
             this.toolStripMenuItem1.Text = "Actions";
-            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // startToolStripMenuItem
             // 
@@ -112,7 +113,13 @@ namespace SimulatorLightningBoltWithVectors
             this.BoltContainer.Size = new System.Drawing.Size(794, 420);
             this.BoltContainer.TabIndex = 1;
             this.BoltContainer.TabStop = false;
-            this.BoltContainer.Click += new System.EventHandler(this.pictureBox1_Click);
+            // 
+            // restartToolStripMenuItem
+            // 
+            this.restartToolStripMenuItem.Name = "restartToolStripMenuItem";
+            this.restartToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.restartToolStripMenuItem.Text = "Restart";
+            this.restartToolStripMenuItem.Click += new System.EventHandler(this.restartToolStripMenuItem_Click);
             // 
             // UserControl1
             // 
@@ -140,5 +147,6 @@ namespace SimulatorLightningBoltWithVectors
         private System.Windows.Forms.PictureBox BoltContainer;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem restartToolStripMenuItem;
     }
 }
