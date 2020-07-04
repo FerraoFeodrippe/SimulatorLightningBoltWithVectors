@@ -138,10 +138,10 @@ namespace SimulatorLightningBoltWithVectors.Core._2D
 
                         while (points.Any())
                         {
-                            if (rams.ContainsKey(p1) && rams[p1].Any() && rams[p1].Count > 1)
-                            {
-                                var rPoints = new Queue<Vector2>(rams[p1]);
+                            var rPoints = rams.ContainsKey(p1) ? new Queue<Vector2>(rams[p1]) : new Queue<Vector2>();
 
+                            if (rPoints.Any() && rPoints.Count > 1)
+                            {
                                 var rP1 = p1;
 
                                 while (rPoints.Any())

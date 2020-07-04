@@ -39,7 +39,6 @@ namespace SimulatorLightningBoltWithVectors.Core._2D
                 lock (__lock)
                 {
                     return new Tuple<Queue<Vector2>, Dictionary<Vector2, Queue<Vector2>>>(
-                    //_points, _ramificationPoints);
                     new Queue<Vector2>(_points),
                         new Dictionary<Vector2, Queue<Vector2>>(_ramificationPoints));
                 }
