@@ -27,10 +27,10 @@ namespace SimulatorLightningBoltWithVectors.Core._2D
         private readonly int _removePointRate;
 
         public bool QueeFilled { get; private set; }
-        public bool _hasFinished { get; private set; }
+        private bool _hasFinished;
 
-        private Queue<Vector2> _points;
-        private Dictionary<Vector2, Queue<Vector2>> _ramificationPoints;
+        private readonly Queue<Vector2> _points;
+        private readonly Dictionary<Vector2, Queue<Vector2>> _ramificationPoints;
 
         public Tuple<Queue<Vector2>, Dictionary<Vector2, Queue<Vector2>>> GetPoints
         {
@@ -46,9 +46,9 @@ namespace SimulatorLightningBoltWithVectors.Core._2D
             }
         }
 
-        IStateCheck _state;
+        readonly IStateCheck _state;
 
-        private object __lock;
+        private readonly object __lock;
 
         private Task _tQuee;
         private Task _tDequee;
@@ -119,7 +119,12 @@ namespace SimulatorLightningBoltWithVectors.Core._2D
 
         private async void Dequee()
         {
-            bool any = _points.Any();
+            bool any;
+
+            lock (__lock)
+            {
+                any = _points.Any();
+            }
 
             while (any)
             {
@@ -175,8 +180,8 @@ namespace SimulatorLightningBoltWithVectors.Core._2D
                 float newX = _sizeVector.X * (float)Math.Cos(actuaAng * Math.PI / 180);
                 float newY = _sizeVector.X * (float)Math.Sin(actuaAng * Math.PI / 180);
 
-                rPoint.X = rPoint.X + newX;
-                rPoint.Y = rPoint.Y + newY;
+                rPoint.X += newX;
+                rPoint.Y += newY;
 
                 ramificationRange--;
 

@@ -17,10 +17,10 @@ namespace SimulatorLightningBoltWithVectors.Core._2D
         private readonly BoltConfig _config;
 
         private float _sizeVector;
-        private Bitmap _bitmapDefault;
+        private readonly Bitmap _bitmapDefault;
         private Bitmap _bitmap;
 
-        private System.Windows.Forms.PictureBox _boltContainer;
+        private readonly System.Windows.Forms.PictureBox _boltContainer;
 
         private volatile bool _paused;
         private volatile bool _executing;
