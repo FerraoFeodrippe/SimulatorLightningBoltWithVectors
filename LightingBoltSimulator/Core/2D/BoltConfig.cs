@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SimulatorLightningBoltWithVectors.Core._2D
+namespace LightingBoltSimulator.Core._2D
 {
 
     public class BoltConfig

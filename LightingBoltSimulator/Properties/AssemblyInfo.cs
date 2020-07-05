@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SimulatorLightningBoltWithVectors")]
+[assembly: AssemblyTitle("LightingBoltSimulator")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("SimulatorLightningBoltWithVectors")]
+[assembly: AssemblyProduct("LightingBoltSimulator")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("78b00e86-8289-446c-8dbd-5ae71342b5dd")]
+[assembly: Guid("9527af0b-5a56-4ba5-9601-b988fda86e39")]
 
 // Version information for an assembly consists of the following four values:
 //

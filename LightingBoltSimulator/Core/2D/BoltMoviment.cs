@@ -1,4 +1,4 @@
-﻿using SimulatorLightningBoltWithVectors.Interfaces;
+﻿using LightingBoltSimulator.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Drawing.Drawing2D;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SimulatorLightningBoltWithVectors.Core._2D
+namespace LightingBoltSimulator.Core._2D
 {
 
     public class BoltMoviment : IDisposable

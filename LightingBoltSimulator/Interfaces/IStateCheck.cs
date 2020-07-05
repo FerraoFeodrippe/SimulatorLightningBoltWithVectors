@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SimulatorLightningBoltWithVectors.Interfaces
+namespace LightingBoltSimulator.Interfaces
 {
     public interface IStateCheck
     {

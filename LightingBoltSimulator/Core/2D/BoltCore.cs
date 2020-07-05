@@ -6,9 +6,9 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
-using SimulatorLightningBoltWithVectors.Interfaces;
+using LightingBoltSimulator.Interfaces;
 
-namespace SimulatorLightningBoltWithVectors.Core._2D
+namespace LightingBoltSimulator.Core._2D
 {
     public class BoltCore : IStateCheck
     {
